@@ -35,9 +35,8 @@ sudo python setup.py install
 
 新建flask项目，就一个程序文件app.py，内容如下：
 
-.. code:: python
-
 	from flask import Flask
+
 	app = Flask(__name__)
 	 
 	@app.route("/")
@@ -53,14 +52,15 @@ sudo python setup.py install
 ---------------
 
 编辑nginx.conf
-.. code:: nginx
-	location / {
+
+	location{
 	    include uwsgi_params;
 	    uwsgi_pass 127.0.0.1:3031;
 	    root  html;
 	    index  index.html index.htm;
 	}
-	$ sudo /usr/local/nginx/sbin/nginx -t -c /usr/local/nginx/conf/nginx.conf
+
+	sudo /usr/local/nginx/sbin/nginx -t -c /usr/local/nginx/conf/nginx.conf
 
 然后重启nginx
 nginx -s reload
@@ -72,7 +72,6 @@ var/www/blackgolds
 把app.py 拿过来
 再次创建文件app_config.xml，内容如下
 
-.. code:: html
 	<uwsgi>
 	<pythonpath>/var/www/blackgolds</pythonpath>
 	<module>app</module>
@@ -109,6 +108,7 @@ uwsgi -x /srv/blackgolds/app_config.xml
 停止uwsgi
 ---------
 killall -9 uwsgi
+
 pkill -HUP uwsgi
 
 
