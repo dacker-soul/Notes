@@ -1,0 +1,126 @@
+1. 	adduser git
+2. 	passwd git
+3. 	假定是/srv/blackgolds.git
+	sudo git init --bare --share 
+	让仓库接受代码提交
+    git config receive.denyCurrentBranch ignore
+	sudo chown -R git:git blackgolds.git
+	编辑/etc/passwd
+	git:x:1001:1001:,,,:/home/git:/bin/bash -> 
+	git:x:1001:1001:,,,:/home/git:/usr/bin/git-shell
+
+4. 在/home/git目录下 执行ssh-keygen生成，新建authorized_keys文件
+   将公钥加在其中，保存
+
+特殊说明：
+authorized_keys 文件必须是600权限(也就是-rw——-)或者644
+.ssh目录必须是700权限(也就是drwx——)
+/home/git 必须是 755权限 即drwxr-xr-x
+
+ssh默认端口不是22的情况
+git clone ssh://git@23.105.213.195:27209/srv/blackgolds.git
+
+5.自动部署脚本
+git /srv/blackgold.git /srv/blackgold
+
+
+cd /srv/blackgolds.git/hook
+mv post-update.sample post-update
+vim post-update
+删除所有，贴上下面的脚本
+
+#!/bin/sh
+#判断是不是远端仓库
+IS_BARE=$(git rev-parse --is-bare-repository)
+if [ -z "$IS_BARE" ]; then
+echo >&2 "fatal: post-receive: IS_NOT_BARE"
+exit 1
+fi
+
+unset GIT_DIR
+DeployPath="/srv/blackgolds"
+
+echo "==============================================="
+cd $DeployPath
+echo "deploying the test web"
+#git stash
+#git pull origin master
+git fetch --all
+git reset --hard origin/master
+
+time=`date`
+echo "web server pull at webserver at time: $time."
+echo "================================================"
+
+
+
+#保存退出
+chmod u+x post-update
+#让它可以被执行
+
+6.
+chown -Rh git:git /srv/blackgolds
+chown -Rh git:git /srv/blackgolds.git
+
+git reset --hard origin/master
+git clean -f
+git pull
+git checkout master
+
+错误提示，对应
+
+
+1-- clone分支，修改文件本地commit后， push回原分支失败，报错：
+  git push 
+  hap@192.168.1.2's password: 
+  Counting objects: 21, done.
+  Compressing objects: 100% (11/11), done.
+  Writing objects: 100% (11/11), 1010 bytes, done.
+  Total 11 (delta 9), reused 0 (delta 0)
+  error: refusing to update checked out branch: refs/heads/master
+  error: By default, updating the current branch in a non-bare repository
+  error: is denied, because it will make the index and work tree inconsistent
+  error: with what you pushed, and will require 'git reset --hard' to match
+  error: the work tree to HEAD.
+  error: 
+  error: You can set 'receive.denyCurrentBranch' configuration variable to
+  error: 'ignore' or 'warn' in the remote repository to allow pushing into
+  error: its current branch; however, this is not recommended unless you
+  error: arranged to update its work tree to match what you pushed in some
+  error: other way.
+  error: 
+  error: To squelch this message and still keep the default behaviour, set
+  error: 'receive.denyCurrentBranch' configuration variable to 'refuse'.
+  To git+ssh://hap@192.168.1.2/media/LINUXDATA/working
+  ! [remote rejected] master -> master (branch is currently checked out)
+  error: failed to push some refs to 'git+ssh://hap@192.168.1.2/media/LINUXDATA/working'
+
+  参照如下链接，目标repo中执行 $ git config 'receive.denyCurrentBranch' warn 后OK
+  http://stackoverflow.com/questions/2816369/git-push-error-remote-rejected-master-master-branch-is-currently-checked
+
+2-- 新增文件add commit后，push回原分支失败，报错：
+  Counting objects: 20, done.
+  Delta compression using up to 24 threads.
+  Compressing objects: 100% (11/11), done.
+  Writing objects: 100% (11/11), 1.30 KiB, done.
+  Total 11 (delta 5), reused 0 (delta 0)
+  error: insufficient permission for adding an object to repository database ./objects
+
+  参照如下链接，查看原repo .git目录权限，发现.git/object/没有group写权限导致；执行 $ sudo chmod g+w -R .git/object 后OK
+  http://stackoverflow.com/questions/6448242/git-push-error-insufficient-permission-for-adding-an-object-to-repository-datab
+ 
+3-- git clone/git clone --bare/git clone --mirror 区别
+   http://stackoverflow.com/questions/3959924/whats-the-difference-between-git-clone-mirror-and-git-clone-bare
+
+
+4-- does not appear to be a git repository
+     这种问题，权限问题居多，看看整个repo目录 全路径上面用户、组权权限，是否允许访问
+
+
+
+5--atal: core.bare and core.worktree do not make sense
+     git -c core.bare=false config --unset core.bare
+
+
+
+

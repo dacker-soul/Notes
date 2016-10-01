@@ -1,0 +1,168 @@
+ubuntu命令
+
+配置apache+php+mysql 
+http://www.jb51.net/article/29843.htm
+
+启动apache服务
+# /etc/init.d/apache2 start
+or
+$ sudo /etc/init.d/apache2 start
+
+重启apache服务
+# /etc/init.d/apache2 restart
+or
+$ sudo /etc/init.d/apache2 restart
+
+停止apache服务
+# /etc/init.d/apache2 stop
+or
+$ sudo /etc/init.d/apache2 stop
+
+
+查看端口
+netstat -anp | grep 8000
+杀掉进程
+kill -9 8000
+
+查看目录权限 ls -ld dirname
+r 4
+w 2
+x 1
+权限默认值 022
+查看 umask -s
+chmod
+$ chmod u+x file            给file的属主增加执行权限
+$ chmod 751 file            给file的属主分配读、写、执行(7)的权限，给file的所在组分配读、执行(5)的权限，给其他用户分配执行(1)的权限
+$ chmod u=rwx,g=rx,o=x file 上例的另一种形式
+$ chmod =r file             为所有用户分配读权限
+$ chmod 444 file            同上例
+$ chmod a-wx,a+r   file   　同上例
+$ chmod -R u+r directory    递归地给directory目录下所有文件和子目录的属主分配读的权限
+$ chmod 4755                设置用ID，给属主分配读、写和执行权限，给组和其他用户分配读、执行的权限。
+chown
+chgrp
+useradd
+
+单独查看PATH环境变量，可用：
+[root@localhost u-boot-sh4]#echo $PATH
+
+添加PATH环境变量，可用：
+[root@localhost u-boot-sh4]#export PATH=/opt/STM/STLinux-2.3/devkit/sh4/bin:$PATH
+再次查看：
+[root@localhost u-boot-sh4]# echo $PATH
+
+上述方法的PATH 在终端关闭 后就会消失。所以还是建议通过编辑/etc/profile来改PATH，也可以改家目录下的.bashrc(即：~/.bashrc)。
+第二种方法：
+# vim /etc/profile
+在文档最后，添加:
+export PATH="/opt/STM/STLinux-2.3/devkit/sh4/bin:$PATH"
+保存，退出，然后运行：
+#source /etc/profile
+不报错则成功。
+
+2015/10/12-----------------------------------------------------
+查找命令
+find /etc -name init
+find /etc -iname init  不区分大小写
+* 匹配所有字符
+？匹配单个字符
+一个数据快 512字节=0.5k
+100mb = 102400kb=204800数据快
+find /home -size +204800 -a -size -409600
+find /home -user king
+
+find /etc -cmin -5
+-amin 访问时间acess
+-cmin 访问属性change
+-mmin 访问内容modify
+-a 是and
+-o 是or
+fin /etc -name init* a -type f -exec ls -l {} \;
+-exec -ok
+
+2015/10/13-----------------------------------------------------
+快度查找命令
+locate name
+手动收入db命令
+updatedb
+查找命令所在路径
+which ls
+whereis ls
+在文件内容中查找匹配
+grep [关键字] [位置]
+grep -i kk /tmp/kk
+屏蔽 行首以#开头的查找
+grep -v ^# /tec/kk
+
+帮助命令
+man 文件名
+whatis 命令 #查看命令信息
+apropos 配置文件 # 查看服务信息
+命令 --help #查看命令
+info ls
+help cd
+2015/10/14-----------------------------------------------------
+查询用户命令
+who
+w
+压缩命令
+gzip 文件
+解压缩
+gunzip name
+gzip -d name
+压缩目录
+tar [选项] [压缩后文件名] [目录]
+tar -c #打包
+    -v #显示详细信息
+    -f #指定文件名
+    -z #打包同时压缩
+tar -cf #压缩
+tar -xf #解压缩
+
+.tar.gz
+压缩
+tar -zcf jp.tar.gz jp
+解压
+tar -zxf jp.tar.gz
+
+.zip
+zip [-r#为压缩目录] [压缩后文件名] [文件或者目录]
+zip li.zip li
+zip -r li.zip li
+解压缩
+unzip li.zip
+
+.bzip2
+-k 保留压缩的文件
+bzip2 -k li
+bunzip2 -k li.bz2
+压缩打包
+tar -cjf jp.tar.bz2 jp
+
+解压缩
+tar -xjf jp.tat.bz2
+
+2015/10/15-----------------------------------------------------
+挂载光盘
+mount /dev/srO /mnt/cdrom
+卸载
+umount /dev/srO 
+挂载U盘
+fdisk -l #查看U盘
+如果是fat格式的U盘，挂载命令：mount  -t  vfat  /dev/sdb1  /mnt/udisk
+如果是ntfs格式的U盘，挂载命令：mount  -t  ntfs-3g  /dev/sdb1  /mnt/udisk
+umount /dev/sdb1
+
+#向在线用户发信
+write wall
+#发邮件
+mail
+#查看最后一次登陆
+last
+lastlog
+#查看本机监听端口
+netstat -tlun 
+#查看所有网络连接
+netstat -an
+#查看本机路由表
+netstat -rn

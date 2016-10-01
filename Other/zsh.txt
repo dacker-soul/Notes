@@ -1,0 +1,46 @@
+安装 oh-my-zsh
+
+1. Clone the repository:
+
+git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+2. Optionally, backup your existing ~/.zshrc file:
+
+cp ~/.zshrc ~/.zshrc.orig
+3. Create a new zsh configuration file
+
+You can create a new zsh config file by copying the template that we included for you.
+
+cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+4. Change your default shell
+
+chsh -s /bin/zsh
+5. Initialize your new zsh configuration
+
+
+URL:
+https://github.com/robbyrussell/oh-my-zsh
+https://cnbin.github.io/blog/2015/06/01/mac-zsh-an-zhuang-he-shi-yong/
+
+
+安装 zsh-autosuggestions 自动补全命令
+
+
+Manual
+
+1.git clone git://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+
+2.Add the following to your .zshrc:
+
+	source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+3.Start a new terminal session.
+
+Oh My Zsh
+
+1.git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+
+2.Add the plugin to the list of plugins for Oh My Zsh to load:
+	plugins=(zsh-autosuggestions)
+
+3.Start a new terminal session.
+URL:
+https://github.com/zsh-users/zsh-autosuggestions

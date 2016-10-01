@@ -1,0 +1,147 @@
+配置地址：
+http://blog.csdn.net/kingppy/article/details/13080919
+
+内容复制：
+Ubuntu 提供了一个良好的 Python 开发环境，但如果想使我们的开发效率最大化，还需要进行很多定制化的安装和配置。下面的是我们团队开发人员推荐的一个安装和配置步骤，基于 Ubuntu 12.04 桌面版本标准安装。
+
+安装 Python 发布版本和 build 依赖包
+建议至少安装 Python 2.7/3.2 版本，毕竟 Python 2.X/3.X 还是有不少区别的。
+
+1
+2
+3
+4
+# 安装 Python 发布版本，dev包必须安装，很多用pip安装包都需要编译
+sudo apt-get install python2.7 python2.7-dev python3.2 python3.2-dev
+# 很多pip安装的包都需要libssl和libevent编译环境
+sudo apt-get install build-essential libssl-dev libevent-dev libjpeg-dev libxml2-dev libxslt-dev
+安装 pip 和 virtualenv
+pip 是 Python 的包管理工具，建议 Python 的包都用 pip 进行管理。virtualenv是 Python 多版本管理的利器，不同版本的开发调试全靠它了。
+
+1
+2
+3
+4
+# 安装 pip
+sudo apt-get install python-pip
+# 安装 virtualenv
+sudo pip install virtualenv
+配置个人用 virtualenv
+尽量在 virtualenv 下进行 Python 包的安装。
+
+1
+2
+3
+4
+5
+# 安装 python2.7 virtualenv
+virtualenv --no-site-packages -p /usr/bin/python2.7 ~/.venv/python2.7
+
+# 安装 python3.2 virtualenv
+virtualenv --no-site-packages -p /usr/bin/python3.2 ~/.venv/python3.2
+然后将下面的代码增加到~/.bashrc的最后面，缺省使用 virtualenv 来代替系统 Python 环境：
+
+1
+2
+3
+4
+# 缺省激活python2.7环境
+if [ -f ~/.venv/python2.7/bin/activate ]; then
+    . ~/.venv/python2.7/bin/activate
+fi
+安装 git 和 gitflow
+git是使用 github 必备，目前最好的版本管理工具。
+
+1
+$ sudo apt-get install git
+配置 git：
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+# 常用的命令都设置alias，尽量少敲键盘
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.co checkout
+git config --global alias.st status
+# 很好看地显示git log
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen (%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --"
+# 设置用户信息
+git config --global user.name "Your Name"
+git config --global user.email you@email.com
+# 缺省使用颜色显示
+git config --global color.ui true
+安装 git-flow，使用标准化 git 分支流程，参见：
+
+使用 Git Flow
+一个成功的 Git 分支模型
+1
+sudo apt-get install git-flow
+安装 bash-it
+bash-it可以美化你的 bash 环境，让你更高效地使用控制台终端，详细信息参见bash-it github 网站
+
+1
+2
+git clone http://github.com/revans/bash-it.git ~/.bash_it
+~/.bash_it/install.sh
+安装的时候可以选择所有的 alias/plugins/completion，如果自定义选择，一定将virtualenv, git插件选择上。
+
+安装完成后将下面的代码附加到~/.bashrc的后面：
+
+1
+2
+3
+if [ -f ~/.bash_profile ]; then
+    . ~/.bash_profile
+fi
+bash-it安装完成后缺省使用 bobby 样式(可以参见~/.bash_profile里定义的环境变量BASH_IT_THEME)，编辑~/.bash_it/themes/bobby/bobby.theme.bash，在PS1的定义里增加${green}$(virtualenv_prompt)，如下：
+
+1
+PS1="\n${yellow}$(ruby_version_prompt)${green}$(virtualenv_prompt) ${purple}\h ${reset_color}in ${green}\w\n${bold_cyan}$(scm_char)${green}$(scm_prompt_info) ${green}→${reset_color} "
+注：样式定义参加文件~/.bash_profile里定义的环境变量BASH_IT_THEME，你也将其值更改成其他~/.bash_it/themes里定义的样式。
+
+最后重启终端，你将看到一个不一样的bash，支持显示git分支，virtualenv，rvm等。
+
+安装 Sublime Text 2
+在浏览器进入 Sublime Text 2 官网，选择适合的版本下载安装。
+
+安装完成后还需要安装Sublime Text 2的Package Control。安装细节参见 Sublime Packages 安装。
+
+最后，按快捷键Ctrl+Shift+P调出命令窗口，选择Package Control: Install Package，安装 Python 开发常用的插件：
+
+Auto Encoding for Python
+BracketHighlighter
+Git
+Markdown Preview
+Python Auto-Complete
+SublimeLinter
+SidebarEnhancements
+SublimeCondeIntel
+sublime-github
+Dayle Rees Color Schemes
+这里推荐一下插件 sublime-github，能在 Sublime 里查看，增加，修改GitHub Gist。如果你和团队都使用 Github Gist 来存储自己常用的代码片段，这将非常方便大家去迅速查找和共享解决常见问题的代码片段。
+
+首先进入github 新建一个个人 API 访问 token；
+运行 Sublime，选择菜单Preferences–>Package Settings–>GitHub–>Settings-Default，将上面生成的token复制到 github_token字段，保存。
+之后你就可以按快捷键Ctrl+Shift+P，选择GitHub: Open Gist in Editor，然后选择你自己的 Gist 即可。
+
+安装并配置 Vim
+有了 Sublime Text，大部分情况下都不需要 Vi 了，但的确有些时候进行很小的改动还是用 Vi 最方便。Ubuntu的缺省安装应当已经包括了 Vim，如果没有，运行下面命令安装 Vim。
+
+1
+sudo apt-get install vim
+然后，参考Amix’s Vimrc来配置 Vim。
+
+至此，所有的基本环境就已经配备完成，希望这些配置能对大家有所帮助，下面是配置好的界面截屏。
+
+
+
