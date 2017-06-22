@@ -1,0 +1,51 @@
+微信接口
+-------
+wzhifuSDK [1] - 由微信支付SDK 官方PHP Demo移植而来，v3.37
+
+weixin_pay [2] - 是一个简单的微信支付的接口
+
+weixin_pay [3] - 微信支付接口(V3.3.7)类库。 此类库目前只提供了三种接口的操作类：①统一支付接口②订单查询接口③JSAPI 支付
+
+wxpay [4]- 微信支付非官方Python工具库。主要提供函数：get_brand_wc_pay_request：获取传递给getBrandWCPayRequest的参数；notify_verify：验证微信请求。
+
+flask-weixin-pay [5] - 微信支付的flask扩展
+
+wechat_pay_py   [6] - 实现微信支付V2和V3
+
+weixin-python   [7] - 微信SDK - 包括支付,公众号,登陆,消息处理
+
+支付宝接口
+--------
+alipay_python   [8] - 是支付宝接口的python版本，提供了担保交易，即时到帐和自动发货的接口。 增加了担保交易，确认发货和简单的测试站点(django)
+
+django-oscar-alipay   [9] - 是django-oscar商城系统的支持多种支付方式的支付集成 实现了alipay担保交易，即时到帐和自动发货、、接口。 详细实现了django-oscar的payment支付部分
+
+alipay_py [10] - 支付宝移动支付的python实现。 可帮助大家快速接入支付宝快捷支付
+
+alipay_tornado   [11] - 是支付宝接口的tornado版本，提供了担保交易，即时到帐和自动发货的接口
+
+alipay_mobile_for_python   [12] - 是支付宝手机网站支付接口 python2 实现包
+
+其它支付接口
+-----------
+unionpay   [13] - 银联移动支付服务器端python SDK。 功能：trade: 发送订单推送请求，获得交易流水号、parse_response: 处理银联后台回调、query: 发起交易信息查询，获得交易信息字典
+
+python-tenpay   [14] - 财付通支付接口的python版本
+
+openunipay   [15] - 统一支付接口 - 集成了微信、、支付宝支付。 为微信支付，支付宝支付提供统一接口。 做到一次集成即可使用多种支付渠道
+
+[1]: http://github.com/Skycrab/wzhifuSDK
+[2]: http://github.com/kinglio8520/weixin_pay
+[3]: http://github.com/ddkangfu/weixin_pay
+[4]: http://github.com/deckmon/wxpay
+[5]: http://github.com/zakzou/flask-weixin-pay
+[6]: http://github.com/richfisher/wechat_pay_py
+[7]: http://github.com/zwczou/weixin-python
+[8]: http://github.com/fengli/alipay_python
+[9]: http://github.com/amyhoo/django-oscar-alipay
+[10]: http://github.com/longzhang/alipay_py
+[11]: http://github.com/billyellow/alipay_tornado
+[12]: http://github.com/liukelin/alipay_mobile_for_python
+[13]: http://github.com/raully7/unionpay
+[14]: http://github.com/shelmesky/python-tenpay
+[15]: http://github.com/panweifeng/openunipay
